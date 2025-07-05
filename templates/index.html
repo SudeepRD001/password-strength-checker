@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Password Strength Checker</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>🔐 Advanced Password Strength Checker</h1>
+
+    <form method="POST" novalidate>
+      <label for="password">Enter Password:</label>
+      <input type="password" id="password" name="password" placeholder="Enter your password" required>
+      <button type="submit">Check Strength</button>
+    </form>
+
+    {% if error %}
+      <div class="error">{{ error }}</div>
+    {% endif %}
+
+    {% if result %}
+      <div class="result">
+        <h2>Result</h2>
+        <p><strong>Password:</strong> {{ password }}</p>
+        <p><strong>Score:</strong> {{ result.score }}/4</p>
+
+        {% if result.password_entropy is defined %}
+          <p><strong>Entropy:</strong> {{ result.password_entropy | round(2) }}</p>
+        {% endif %}
+
+        <p><strong>Crack Time:</strong> {{ result.crack_time }}</p>
+
+        <h3>Complexity Rules:</h3>
+        <ul>
+          <li class="{{ 'pass' if result.rules.length_ok else 'fail' }}">Minimum 12 characters</li>
+          <li class="{{ 'pass' if result.rules.has_upper else 'fail' }}">Contains uppercase</li>
+          <li class="{{ 'pass' if result.rules.has_lower else 'fail' }}">Contains lowercase</li>
+          <li class="{{ 'pass' if result.rules.has_digit else 'fail' }}">Contains digit</li>
+          <li class="{{ 'pass' if result.rules.has_special else 'fail' }}">Contains special character</li>
+        </ul>
+
+        {% if result.feedback and result.feedback.warning %}
+          <p><strong>Warning:</strong> {{ result.feedback.warning }}</p>
+        {% endif %}
+
+        {% if result.feedback and result.feedback.suggestions %}
+          <p><strong>Suggestions:</strong></p>
+          <ul>
+            {% for suggestion in result.feedback.suggestions %}
+              <li>{{ suggestion }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Optional future feature: Password visibility toggle
+  <script>
+    // document.getElementById("password").type = "text"; 
+  </script>
+  -->
+
+</body>
+</html>
