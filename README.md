@@ -13,7 +13,7 @@ A secure, modern, and advanced password strength checker web app built with Pyth
 
 ## 📸 Screenshot
 
-![App Screenshot](screenshot.png) <!-- (Add if you want later) -->
+![App Screenshot](password-strength-checker.png) <!-- (Add if you want later) -->
 
 ---
 
